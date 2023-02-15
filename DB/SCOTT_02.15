@@ -32,8 +32,8 @@ SELECT
 -- 두 문자열을 합치는 CONCAT 함수
 SELECT CONCAT(EMPNO, ENAME),
     CONCAT(EMPNO, CONCAT(' : ', ENAME))
-    FROM EMP;
-    -- WHERE ENAME = 'JAMES';
+    FROM EMP
+    WHERE ENAME = 'JAMES';
     
 -- TRIM/LTRIM/RTRIM : 문자열 내에서 특정 문자를 지우기 위해서 사용
 SELECT '[' || TRIM(' _ORACLE_ ') || ']' AS TRIM,
@@ -56,7 +56,7 @@ SELECT SYSDATE AS NOW,
     
 /* 몇 개월 이후의 날짜를 구하는 ADD_MONTHS 함수 */
 -- 특정 날짜에 지정한 개월 수 이후 날짜 데이터를 반환하는 함수
--- ADD_MONTH(날짜 데이터, 더할 개월 수)
+-- ADD_MONTHS(날짜 데이터, 더할 개월 수)
 SELECT SYSDATE,
     ADD_MONTHS(SYSDATE, 5)
     FROM DUAL;
@@ -287,13 +287,16 @@ SELECT *
 -- 4. EMP테이블에서 사원명, 입사일 조회 (단, 입사일은 년도와 월을 분리 추출해서 출력)
 SELECT ENAME,
     TO_CHAR(HIREDATE, 'YYYY') AS 입사년도,
-    TO_CHAR(HIREDATE, 'MM') AS 달
+    TO_CHAR(HIREDATE, 'MM') AS 달,
+    EXTRACT(YEAR FROM HIREDATE) AS 입사년도,
+    EXTRACT(MONTH FROM HIREDATE) AS 달
     FROM EMP;
     
 -- 5. EMP테이블에서 9월에 입사한 직원의 정보 조회
 SELECT *
     FROM EMP
-    WHERE TO_CHAR(HIREDATE, 'MM') = '09';
+    --WHERE TO_CHAR(HIREDATE, 'MM') = '09';
+    WHERE EXTRACT(MONTH FROM HIREDATE) = 9;
 
 -- 6. EMP테이블에서 81년도에 입사한 직원 조회
 SELECT *
@@ -321,4 +324,4 @@ SELECT *
     WHERE SYSDATE > ADD_MONTHS(HIREDATE, 38*12);
     
 -- 11. 오늘 날짜에서 년도만 추출
-SELECT TO_CHAR(SYSDATE, 'YYYY') FROM DUAL;
+SELECT EXTRACT(YEAR FROM SYSDATE) FROM DUAL;
