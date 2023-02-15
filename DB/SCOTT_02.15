@@ -283,4 +283,42 @@ SELECT EMPNO 사번, ENAME 사원명, TRUNC(SAL, -2) AS 급여
 SELECT *
     FROM EMP
     WHERE  MOD(EMPNO, 2) = 1;
+
+-- 4. EMP테이블에서 사원명, 입사일 조회 (단, 입사일은 년도와 월을 분리 추출해서 출력)
+SELECT ENAME,
+    TO_CHAR(HIREDATE, 'YYYY') AS 입사년도,
+    TO_CHAR(HIREDATE, 'MM') AS 달
+    FROM EMP;
     
+-- 5. EMP테이블에서 9월에 입사한 직원의 정보 조회
+SELECT *
+    FROM EMP
+    WHERE TO_CHAR(HIREDATE, 'MM') = '09';
+
+-- 6. EMP테이블에서 81년도에 입사한 직원 조회
+SELECT *
+    FROM EMP
+    WHERE TO_CHAR(HIREDATE, 'YY') = '81';
+
+-- 7. EMP테이블에서 이름이 'E'로 끝나는 직원 조회
+SELECT *
+    FROM EMP
+    WHERE ENAME LIKE '%E';
+    
+-- 8. EMP테이블에서 이름의 세 번째 글자가 'R'인 직원의 정보 조회
+SELECT *
+    FROM EMP
+    WHERE ENAME LIKE '__R%';
+    
+-- 9. EMP테이블에서 사번, 사원명, 입사일, 입사일로부터 40년 되는 날짜 조회
+SELECT EMPNO, ENAME, HIREDATE,
+    ADD_MONTHS(HIREDATE, 480)
+    FROM EMP;
+
+-- 10. EMP테이블에서 입사일로부터 38년 이상 근무한 직원의 정보 조회
+SELECT *
+    FROM EMP
+    WHERE SYSDATE > ADD_MONTHS(HIREDATE, 38*12);
+    
+-- 11. 오늘 날짜에서 년도만 추출
+SELECT TO_CHAR(SYSDATE, 'YYYY') FROM DUAL;
