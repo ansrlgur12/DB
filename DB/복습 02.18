@@ -1,0 +1,47 @@
+-- 25. ‘ALLEN’과 직무가 같은 사원의 이름, 부서 이름, 급여, 부서위치를 출력
+SELECT ENAME, DNAME, SAL, LOC
+    FROM EMP E JOIN DEPT D
+    ON E.DEPTNO = D.DEPTNO
+    WHERE JOB = (SELECT JOB 
+                     FROM EMP
+                     WHERE ENAME = 'ALLEN');
+
+-- 26. 모든 사원들의 평균 급여 보다 많이 받는 사원들의 사원번호와 이름 출력
+SELECT EMPNO, ENAME
+    FROM EMP
+    WHERE SAL > (SELECT AVG(SAL)
+                    FROM EMP);
+
+-- 27. 부서별 평균 급여가 2000보다 적은 부서 사원들의 부서 번호 출력
+SELECT DEPTNO
+    FROM EMP
+    GROUP BY DEPTNO
+        HAVING AVG(SAL) < 2000;
+
+-- 28. 30번 부서의 최고급여보다 급여가 많은 사원의 사원 번호, 이름, 급여를 출력
+SELECT EMPNO, ENAME, SAL
+    FROM EMP
+    WHERE SAL > (SELECT MAX(SAL)
+                        FROM EMP
+                        WHERE DEPTNO = 30);
+
+-- 29. ‘FORD’와 부서가 같은 사원들의 이름, 부서 이름, 직무, 급여를 출력
+SELECT ENAME, DNAME, JOB, SAL
+    FROM EMP E JOIN DEPT D
+    ON E.DEPTNO = D.DEPTNO
+    WHERE DNAME = (SELECT DNAME
+                        FROM EMP E JOIN DEPT D
+                        ON E.DEPTNO = D.DEPTNO
+                        WHERE ENAME = 'FORD');
+                        
+-- 30. 부서 이름이 ‘SALES’인 사원들의 평균 급여 보다 많고, 부서 이름이 ‘RESEARCH’인 사원들의 평균 급여 보다 적은 사원들의 이름, 부서번호, 급여, 직무 출력
+SELECT ENAME, DEPTNO, SAL, JOB
+    FROM EMP
+    WHERE SAL BETWEEN (SELECT AVG(SAL)
+                            FROM EMP E JOIN DEPT D
+                            ON E.DEPTNO = D.DEPTNO
+                            WHERE DNAME = 'SALES') 
+    AND (SELECT AVG(SAL)
+                            FROM EMP E JOIN DEPT D
+                            ON E.DEPTNO = D.DEPTNO
+                            WHERE DNAME = 'RESEARCH');
